@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/mob_calculator_5e-beta/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="mob_calculator_5e">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>mob_calculator_5e</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Ensure flt-glass-pane fills its flutter-view container.
+       Also patch requestAnimationFrame to use setTimeout so Flutter renders
+       even in environments where the tab is not the active rendering target. -->
+  <style>
+    flt-glass-pane { display: block; position: absolute; inset: 0; }
+  </style>
+  <script>
+    (function () {
+      // Some embedded/automated preview hosts report document.visibilityState
+      // as 'visible' without ever actually compositing a frame, so native
+      // requestAnimationFrame silently never fires and Flutter never paints.
+      // Rather than trust that signal, race native RAF against a timeout on
+      // every frame — whichever fires first wins. In a normal browser native
+      // RAF wins almost every time (~16ms), so real users still get proper
+      // vsync-timed frames; in a host that never composites, the fallback
+      // guarantees Flutter still pumps frames instead of hanging forever.
+      var _raf = window.requestAnimationFrame;
+      window.requestAnimationFrame = function (cb) {
+        var fired = false;
+        var timeoutId = setTimeout(function () {
+          if (fired) return;
+          fired = true;
+          cb(performance.now());
+        }, 100);
+        return _raf(function (t) {
+          if (fired) return;
+          fired = true;
+          clearTimeout(timeoutId);
+          cb(t);
+        });
+      };
+    })();
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
